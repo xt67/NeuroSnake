@@ -1,78 +1,118 @@
 # NeuroSnake
 
-A playable Snake game and Double DQN agent with two interchangeable neural networks:
-PyTorch for a familiar baseline, and NumPy with manually implemented forward propagation,
-Huber loss, backpropagation, gradient clipping and Adam updates.
+NeuroSnake is a reinforcement learning project where an AI agent learns to play the classic Snake game using **Double Deep Q-Learning (Double DQN)**.
 
-## Run on Windows
+The project features two neural network implementations: PyTorch and a NumPy-based network with manually implemented forward propagation and backpropagation.
+
+## Features
+
+- Playable Snake game built with Pygame.
+- AI agent trained using Double Deep Q-Learning.
+- PyTorch and NumPy neural network implementations.
+- Manual backpropagation in the NumPy implementation.
+- Experience replay and target network.
+- Automated training and model evaluation.
+- Training progress visualisation.
+- Browser-based demonstration of the trained AI.
+
+## Tech Stack
+
+- Python
+- NumPy
+- PyTorch (optional)
+- Pygame
+- Matplotlib
+- JavaScript
+
+## Getting Started
+
+**1. Clone the repository**
+
+```bash
+git clone https://github.com/xt67/NeuroSnake.git
+cd NeuroSnake
+```
+
+**2. Create a virtual environment**
+
+```bash
+python -m venv .venv
+```
+
+Activate it on Windows:
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
+.venv\Scripts\Activate.ps1
+```
+
+**3. Install dependencies**
+
+```bash
+pip install -r requirements.txt
+```
+
+**4. Play Snake**
+
+```bash
 python -m neurosnake play
 ```
 
-Arrow keys move; Space pauses; R restarts; Escape exits.
+**5. Train the AI**
 
-## Train and watch
+Using NumPy:
 
-```powershell
-# Optional first baseline (requires pip install torch)
+```bash
+python -m neurosnake train --backend numpy --games 500
+```
+
+Using PyTorch (install PyTorch separately):
+
+```bash
 python -m neurosnake train --backend torch --games 500 --output artifacts/torch
-python -m neurosnake play --backend torch --model artifacts/torch/model.pt
+```
 
-# NumPy-only neural network
-python -m neurosnake train --games 500 --output artifacts/numpy
+**6. Watch the trained AI**
+
+```bash
 python -m neurosnake play --model artifacts/numpy/model.npz
-python -m neurosnake evaluate --model artifacts/numpy/model.npz --games 100 --output artifacts/numpy/evaluation.json
-python -m unittest discover -s tests -v
 ```
 
-Training is headless. Each run saves a final inference model, configuration, per-game
-scores and a learning curve. Checkpoints contain inference weights, not resumable
-optimizer/replay state. Use the same `--size` for training and evaluation.
+**7. Evaluate the trained model**
 
-## How it learns
-
-The 11 binary inputs are danger straight/right/left; direction left/right/up/down;
-and food left/right/up/down. The network is 11 → 128 ReLU → 3 Q values, representing
-straight/right/left. Rewards are +10 for food, -10 for a collision or starvation,
-and 0 otherwise. Starvation ends a game after 100 × snake length steps without food.
-A full board ends successfully. The tail may be entered when it moves away.
-
-An epsilon-greedy policy explores initially. Experience replay stores 50,000
-transitions; batches of 64 train every four moves. A frozen target network updates
-every 500 moves. Double DQN targets use discount 0.95. All randomness is seeded.
-Evaluation disables exploration and defaults to new seeds starting at 10000.
-
-## Measured local result
-
-The NumPy agent trained for 500 games (seed 42, 12×12 board), then averaged **23.24**
-food pickups over 100 evaluation games (seeds 10000–10099, no exploration).
-Standard deviation: 7.62; best evaluation score: 42. This is one training seed,
-not a multi-seed benchmark. See `RESULTS.md` for verification details.
-
-The trained local model can be watched with:
-
-```powershell
-python -m neurosnake play --model artifacts/numpy-500/model.npz
+```bash
+python -m neurosnake evaluate --model artifacts/numpy/model.npz --games 100
 ```
 
-Generated models and datasets are ignored by Git. A fresh clone needs training first.
-Requirements select NumPy 1.26 for compatibility with older PyTorch binaries. The
-local NumPy backend also passed with NumPy 2.5.4; the installed PyTorch 2.2 emits a
-NumPy ABI warning. Use the isolated environment above to avoid that combination.
+## Project Structure
 
-Read `neurosnake/network.py` for every NumPy gradient. Tests compare those gradients
-against numerical finite differences and check the rules and checkpoint round trip.
-Learning speed and scores depend on seed, board size and training budget. Report
-evaluation scores, not the highest training score; do not fill resume metrics before
-running evaluation. The whole-board input experiment remains a possible extension.
+```text
+NeuroSnake/
+├── neurosnake/  # Game environment and neural networks
+├── tests/       # Unit tests
+├── web/         # Browser-based demonstration
+├── RESULTS.md   # Training results and verification
+├── requirements.txt
+└── README.md
+```
 
-## References
+## Training Results
 
-Original implementation inspired by the task, not copied from these resources:
-- https://github.com/patrickloeber/snake-ai-pytorch
-- https://github.com/karpathy/micrograd
-- https://arxiv.org/abs/1312.5602
+The NumPy agent was trained for 500 games on a 12 × 12 board.
+
+| Metric | Result |
+|---|---:|
+| Evaluation games | 100 |
+| Average score | 23.24 |
+| Best score | 42 |
+
+These results are from a single training run. See [RESULTS.md](RESULTS.md) for additional details.
+
+## Current Status
+
+The game environment, Double DQN training pipeline, NumPy and PyTorch implementations, and browser demonstration are implemented.
+
+The trained NumPy model can be used to play and evaluate the game.
+
+---
+
+Developed by [xt67](https://github.com/xt67).
