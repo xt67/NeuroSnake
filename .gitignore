@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+artifacts/
+data/
+*.pyc
+
+# Independent heartbeat repository and original starter workspace.
+/repositories/
+/heartbeat_classifier/
+/tests/test_heartbeat.py
