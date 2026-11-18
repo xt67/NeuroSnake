@@ -76,5 +76,3 @@ Original implementation inspired by the task, not copied from these resources:
 - https://github.com/patrickloeber/snake-ai-pytorch
 - https://github.com/karpathy/micrograd
 - https://arxiv.org/abs/1312.5602
-
-Companion project: [Heartbeat Classifier](https://github.com/xt67/Heartbeat-Classifier).
