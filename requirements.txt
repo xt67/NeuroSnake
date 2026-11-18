@@ -1,0 +1,4 @@
+numpy>=1.26,<2
+matplotlib>=3.8
+pygame>=2.5
+# Optional PyTorch backend: pip install torch
