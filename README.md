@@ -106,13 +106,6 @@ The NumPy agent was trained for 500 games on a 12 × 12 board.
 | Best score | 42 |
 
 These results are from a single training run. See [RESULTS.md](RESULTS.md) for additional details.
-
-## Current Status
-
-The game environment, Double DQN training pipeline, NumPy and PyTorch implementations, and browser demonstration are implemented.
-
-The trained NumPy model can be used to play and evaluate the game.
-
 ---
 
 Developed by [xt67](https://github.com/xt67).
